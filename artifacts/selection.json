@@ -1,0 +1,18 @@
+{
+  "selected_model": "logistic_regression",
+  "rule": "recall_then_precision_then_accuracy",
+  "positive_class": "malignant",
+  "rationale": "Selected model with highest recall on the malignant class; ties broken by precision, then accuracy.",
+  "metrics": {
+    "logistic_regression": {
+      "accuracy": 0.9649122807017544,
+      "precision": 0.975,
+      "recall": 0.9285714285714286
+    },
+    "knn": {
+      "accuracy": 0.9122807017543859,
+      "precision": 0.8636363636363636,
+      "recall": 0.9047619047619048
+    }
+  }
+}

@@ -267,6 +267,20 @@ def export_parquet_audit(
         lambda r: {"export_path": r["parquet_path"]},
     )
 
-
+@server.tool()
+def predict_both(
+    input_data: Dict[str, Any] = Field(description=INPUT_DATA_DESCRIPTION),
+    request_id: str = RequestId,
+) -> Dict[str, Any]:
+    """Predict with BOTH models in one call and report whether they agree."""
+    def work():
+        lr = ml.predict_with_model(ml.load_model("logistic_regression"), input_data)
+        knn = ml.predict_with_model(ml.load_model("knn"), input_data)
+        return {"status": "success",
+                "logistic_regression": lr["predicted_class"],
+                "knn": knn["predicted_class"],
+                "models_agree": lr["predicted_class"] == knn["predicted_class"]}
+    return _run("predict_both", request_id, work,
+                lambda r: {"models_agree": r["models_agree"]})
 if __name__ == "__main__":
     server.run("stdio")
